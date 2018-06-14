@@ -2,16 +2,6 @@ package com.haibin.common.enums;
 
 /**
  * 时间枚举类，单位统一为：毫秒
- * 
- * Title. <br>
- * Description.
- * <p>
- * Copyright: Copyright (c) 2017年3月16日 下午5:20:09
- * <p>
- * Author: saq691@126.com
- * <p>
- * Version: 1.0
- * <p>
  */
 public enum DateTypeEnum {
 	DAY("天") {
