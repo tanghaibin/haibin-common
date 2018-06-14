@@ -31,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
+import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
@@ -205,10 +206,12 @@ public class HttpClientUtil {
             log.error("HTTP Exception", e);
             throw e;
         } finally {
-        	if(httpPost!=null)
-        		httpPost.abort();
-        	if(response!=null)
-        		response.close();
+        	if(httpPost!=null) {
+				httpPost.abort();
+			}
+        	if(response!=null) {
+				response.close();
+			}
         }
 	}
 
@@ -276,4 +279,64 @@ public class HttpClientUtil {
             }
         }
     }
+
+    public static String doGet(String url, int retryTimes) throws Exception {
+		log.info("请求地址[{}]", url);
+		int retryCount = retryTimes;
+		try {
+			return doGetByLoop(url);
+		} catch (Exception e) {
+			--retryTimes;
+			if(retryTimes > 0) {
+				return doGetByLoop(url);
+			} else {
+				throw new HttpException(String.format(
+						"获取返回值失败, URL: \'%s\' . 尝试 \'%s\' 次",
+						new Object[] {url, Integer.valueOf(Math.max(retryCount, 1))}));
+			}
+		}
+	}
+
+	public static String doGetByLoop(String url) throws Exception {
+		HttpClientContext context = HttpClientContext.create();
+		HttpEntity entity = null;
+		HttpGet httpGet = new HttpGet(url);
+
+		RequestConfig requestConfig = RequestConfig.custom()
+				.setConnectionRequestTimeout(CONNECT_TIMEOUT)
+				.setConnectTimeout(CONNECT_TIMEOUT)
+				.setSocketTimeout(CONNECT_TIMEOUT)
+				.build();
+		httpGet.setConfig(requestConfig);
+
+		CloseableHttpResponse response = null;
+		try {
+			response = httpclient.execute(httpGet, context);
+			entity = response.getEntity();
+			context.getCookieStore().clear();
+			return EntityUtils.toString(entity, "utf-8");
+		}catch (ConnectionPoolTimeoutException e) {
+			log.error("Exception: 连接池超时.");
+			throw e;
+		} catch (ConnectTimeoutException e) {
+			log.error("Exception: 连接超时");
+			throw e;
+		} catch (SocketTimeoutException e) {
+			log.error("Exception: Socket超时.");
+			throw e;
+		} catch (ConnectException e){
+			log.error("Exception: 连接被拒绝.");
+			throw e;
+		} catch (Exception e) {
+			log.error("HTTP Exception", e);
+			throw e;
+		} finally {
+			if(httpGet!=null) {
+				httpGet.abort();
+			}
+			if(response!=null) {
+				response.close();
+			}
+		}
+	}
 }
