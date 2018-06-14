@@ -6,6 +6,7 @@ import org.apache.http.*;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.config.ConnectionConfig;
@@ -243,10 +244,12 @@ public class HttpClientUtil {
             log.error("HTTP Exception", e);
             throw e;
         } finally {
-        	if(httpPost!=null)
-        		httpPost.abort();
-            if(response!=null)
-        		response.close();
+        	if(httpPost!=null) {
+				httpPost.abort();
+			}
+            if(response!=null) {
+				response.close();
+			}
         }
         return result;
     }
@@ -273,5 +276,4 @@ public class HttpClientUtil {
             }
         }
     }
-	
 }
