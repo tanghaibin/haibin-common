@@ -1,0 +1,13 @@
+/**/logs/
+/**/.DS_Store
+/**/.settings/
+/**/.idea/
+*.iml
+.project
+/**/overlays/
+/**/target/
+/**/.classpath
+/out/
+crbr.keystore
+/conf/
+/**/disconf/
