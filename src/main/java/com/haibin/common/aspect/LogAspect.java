@@ -20,7 +20,7 @@ public class LogAspect {
     public Object log(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
             if(!LOG.isDebugEnabled()) {
-                return joinPoint.getArgs();
+                return joinPoint.proceed(joinPoint.getArgs());
             }
             Method targetMethod = getTargetMethod(joinPoint);
             if (targetMethod == null) {
