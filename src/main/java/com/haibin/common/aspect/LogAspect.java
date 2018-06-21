@@ -3,7 +3,6 @@ package com.haibin.common.aspect;
 import com.haibin.common.annotation.OutLog;
 import com.haibin.common.util.JsonUtil;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +44,7 @@ public class LogAspect {
             int prefixIndex = 0;
             final String reference = getReference(targetMethod);
             for (int i : index) {
-                LOG.debug("{}:{}:{}", reference, desc[prefixIndex++], JsonUtil.obj2Json(args[i]));
+                LOG.debug("{}-{}-{}", reference, desc[prefixIndex++], JsonUtil.obj2Json(args[i]));
             }
         } catch (Throwable e) {
             LOG.error("解析OutLog注解出错", e);
