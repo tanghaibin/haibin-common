@@ -36,7 +36,7 @@ public class FileUitl {
             }
             return fileName;
         }catch (Exception e) {
-            throw new BizException("新建图片失败");
+            throw new BizException("新建图片失败", e);
         }
     }
 }
