@@ -23,5 +23,5 @@ public @interface OutLog {
      * 参数前的描述
      * @return
      */
-    String[] prefix() default "";
+    String[] prefix() default {"", "", "", "", "", "", "", "", "", ""};
 }
