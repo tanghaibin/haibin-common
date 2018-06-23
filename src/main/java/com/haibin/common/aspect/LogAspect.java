@@ -68,6 +68,7 @@ public class LogAspect {
      * @return
      */
     private Method getTargetMethod(JoinPoint point) {
+        //todo 当参数为空会抛异常
         Object[] args = point.getArgs();
         Class<?>[] argTypes = new Class[point.getArgs().length];
         for (int i = 0; i < args.length; i++) {
