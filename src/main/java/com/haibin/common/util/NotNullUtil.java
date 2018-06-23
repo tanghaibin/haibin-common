@@ -23,17 +23,16 @@ public class NotNullUtil {
 
     private static final String GET_PREFIX = "get";
 
-    private static final String SET_PREFIX = "set";
-
     /**
      * 校验对象属性标注了{@link NotNull} 注解的不能为空
-     *  note: 属性必须有get set方法, 且get方法不能有参数
+     * note: 属性必须有get set方法, 且get方法不能有参数
+     *
      * @param target
      * @param <T>
      */
     public static <T> void check(T target) {
         try {
-            if(target == null) {
+            if (target == null) {
                 throw new BizException("参数错误");
             }
             Class clazz = target.getClass();
@@ -44,10 +43,7 @@ public class NotNullUtil {
                     continue;
                 }
                 Class<?> fieldType = field.getType();
-                char[] fieldNameChars = field.getName().toCharArray();
-                char fieldFirstCharToUpperCase = Character.toUpperCase(fieldNameChars[0]);
-                fieldNameChars[0] = fieldFirstCharToUpperCase;
-                final String methodName = GET_PREFIX + String.valueOf(fieldNameChars);
+                final String methodName = GET_PREFIX + transFieldNameFirstToUpperCase(field.getName());
                 Method method = clazz.getMethod(methodName, null);
                 Object value = method.invoke(target, null);
                 if (fieldType == String.class) {
@@ -56,21 +52,34 @@ public class NotNullUtil {
                     }
                 }
             }
-        }catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * 转换字段名首字母为大写
+     *
+     * @param fieldName
+     * @return
+     */
+    private static String transFieldNameFirstToUpperCase(String fieldName) {
+        char[] fieldNameChars = fieldName.toCharArray();
+        char fieldFirstCharToUpperCase = Character.toUpperCase(fieldNameChars[0]);
+        fieldNameChars[0] = fieldFirstCharToUpperCase;
+        return String.valueOf(fieldNameChars);
+    }
+
     private static Field[] getFields(Class clazz, List<Field> container) {
         Field[] fields = clazz.getDeclaredFields();
-        if(ArrayUtils.isNotEmpty(fields)) {
+        if (ArrayUtils.isNotEmpty(fields)) {
             container.addAll(Arrays.asList(fields));
         } else {
             return CollectionUtils.toArray(container);
         }
         Class superClass = clazz.getSuperclass();
-        if(superClass != null) {
-           getFields(superClass, container);
+        if (superClass != null) {
+            getFields(superClass, container);
         }
         return CollectionUtils.toArray(container);
     }
