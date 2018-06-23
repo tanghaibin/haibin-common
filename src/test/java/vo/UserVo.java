@@ -6,7 +6,7 @@ import com.haibin.common.annotation.NotNull;
  * @author haibin.tang
  * @create 2018-06-23 下午5:03
  **/
-public class UserVo {
+public class UserVo extends BaseVo {
 
     @NotNull(message = "姓名不能为空")
     private String name;

@@ -13,6 +13,7 @@ public class CommonTest {
         UserVo userVo = new UserVo();
         userVo.setName("aa");
         userVo.setMobile("23");
+        userVo.setOs("wchat");
         NotNullUtil.check(userVo);
     }
 }

@@ -2,11 +2,16 @@ package com.haibin.common.util;
 
 import com.haibin.common.annotation.NotNull;
 import com.haibin.common.exception.BizException;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.codelogger.utils.CollectionUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 校验空工具
@@ -28,8 +33,11 @@ public class NotNullUtil {
      */
     public static <T> void check(T target) {
         try {
+            if(target == null) {
+                throw new BizException("参数错误");
+            }
             Class clazz = target.getClass();
-            Field[] fields = clazz.getDeclaredFields();
+            Field[] fields = getFields(clazz, new ArrayList<>());
             for (Field field : fields) {
                 NotNull notNull = field.getAnnotation(NotNull.class);
                 if (notNull == null) {
@@ -51,5 +59,19 @@ public class NotNullUtil {
         }catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static Field[] getFields(Class clazz, List<Field> container) {
+        Field[] fields = clazz.getDeclaredFields();
+        if(ArrayUtils.isNotEmpty(fields)) {
+            container.addAll(Arrays.asList(fields));
+        } else {
+            return CollectionUtils.toArray(container);
+        }
+        Class superClass = clazz.getSuperclass();
+        if(superClass != null) {
+           getFields(superClass, container);
+        }
+        return CollectionUtils.toArray(container);
     }
 }
