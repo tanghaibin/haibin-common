@@ -23,6 +23,18 @@ public class ExcelReadUtil {
 
     private static final String SET_PREFIX = "set";
 
+    /**
+     * 读取excel 转换成java pojo
+     *  目前只支持字段类型为String
+     * @param filePath  文件路径
+     * @param startRow  从第几行开始读
+     * @param startCol  从第几列开始读
+     * @param sheetNum  从第几个shell开始读
+     * @param clazz     最终转换的类型
+     * @param <T>       泛型代表转换的类型
+     * @return
+     * @throws Exception
+     */
     public static <T> List<T> read(String filePath, int startRow, int startCol, int sheetNum, Class<T> clazz) throws Exception {
         List<Map<String, String>> datas = read(filePath, startRow, startCol, sheetNum);
         Field[] fields = clazz.getDeclaredFields();
@@ -47,7 +59,7 @@ public class ExcelReadUtil {
     }
 
     private static List<Map<String, String>> read(String filePath, int startRow, int startCol, int sheetNum) throws Exception {
-        List<Map<String, String>> varList = new ArrayList<>();
+        List<Map<String, String>> datas = new ArrayList<>();
         File target = new File(filePath);
         FileInputStream fi = new FileInputStream(target);
         Workbook book;
@@ -61,17 +73,17 @@ public class ExcelReadUtil {
         //取得最后一行的行号
         int rowNum = sheet.getLastRowNum() + 1;
         //行循环开始
-        for (int i = startRow; i < rowNum; i++) {
-            Map<String, String> varpd = new HashMap<>(rowNum);
-            Row row = sheet.getRow(i);
+        for (int rowIndex = startRow; rowIndex < rowNum; rowIndex++) {
+            Map<String, String> data = new HashMap<>(rowNum);
+            Row row = sheet.getRow(rowIndex);
             if (row == null) {
                 continue;
             }
             //每行的最后一个单元格位置
             int cellNum = row.getLastCellNum();
             //列循环开始
-            for (int j = startCol; j < cellNum; j++) {
-                Cell cell = row.getCell(Short.parseShort(j + ""));
+            for (int colIndex = startCol; colIndex < cellNum; colIndex++) {
+                Cell cell = row.getCell(Short.parseShort(colIndex + ""));
                 String cellValue = null;
                 if (null != cell) {
                     // 判断excel单元格内容的格式，并对其进行转换，以便插入数据库
@@ -100,11 +112,11 @@ public class ExcelReadUtil {
                 } else {
                     cellValue = "";
                 }
-                varpd.put(COL_PREFIXX + j, cellValue);
+                data.put(COL_PREFIXX + colIndex, cellValue);
             }
-            varList.add(varpd);
+            datas.add(data);
         }
-        return varList;
+        return datas;
     }
 
     /**
