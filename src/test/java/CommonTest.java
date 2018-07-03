@@ -1,6 +1,11 @@
+import com.haibin.common.util.ExcelReadUtil;
 import com.haibin.common.util.NotNullUtil;
 import org.junit.Test;
+import vo.UserInfo;
 import vo.UserVo;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author haibin.tang
@@ -15,5 +20,13 @@ public class CommonTest {
         userVo.setMobile("23");
         userVo.setOs("wchat");
         NotNullUtil.check(userVo);
+    }
+
+    @Test
+    public void testReadExcel() throws Exception {
+        List<UserInfo> datas = ExcelReadUtil.readExcelx("/app/test-import.xlsx", 1, 0, 0, UserInfo.class);
+        for (UserInfo data : datas) {
+            System.out.println(data);
+        }
     }
 }
