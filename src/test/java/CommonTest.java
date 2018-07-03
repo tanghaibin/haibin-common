@@ -5,7 +5,6 @@ import vo.UserInfo;
 import vo.UserVo;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author haibin.tang
@@ -24,7 +23,7 @@ public class CommonTest {
 
     @Test
     public void testReadExcel() throws Exception {
-        List<UserInfo> datas = ExcelReadUtil.readExcelx("/app/test-import.xlsx", 1, 0, 0, UserInfo.class);
+        List<UserInfo> datas = ExcelReadUtil.read("/app/test-import.xlsx", 1, 0, 0, UserInfo.class);
         for (UserInfo data : datas) {
             System.out.println(data);
         }

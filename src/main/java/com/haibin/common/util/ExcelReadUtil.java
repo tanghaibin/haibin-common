@@ -23,8 +23,8 @@ public class ExcelReadUtil {
 
     private static final String SET_PREFIX = "set";
 
-    public static <T> List<T> readExcelx(String filePath, int startRow, int startCol, int sheetNum, Class<T> clazz) throws Exception {
-        List<Map<String, String>> datas = readExcelx(filePath, startRow, startCol, sheetNum);
+    public static <T> List<T> read(String filePath, int startRow, int startCol, int sheetNum, Class<T> clazz) throws Exception {
+        List<Map<String, String>> datas = read(filePath, startRow, startCol, sheetNum);
         Field[] fields = clazz.getDeclaredFields();
         Map<String, String> fieldNames = new HashMap<>(fields.length);
         for (Field field : fields) {
@@ -46,7 +46,7 @@ public class ExcelReadUtil {
         return result;
     }
 
-    private static List<Map<String, String>> readExcelx(String filePath, int startRow, int startCol, int sheetNum) throws Exception {
+    private static List<Map<String, String>> read(String filePath, int startRow, int startCol, int sheetNum) throws Exception {
         List<Map<String, String>> varList = new ArrayList<>();
         File target = new File(filePath);
         FileInputStream fi = new FileInputStream(target);
