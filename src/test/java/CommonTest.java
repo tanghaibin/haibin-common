@@ -23,9 +23,9 @@ public class CommonTest {
 
     @Test
     public void testReadExcel() throws Exception {
-        List<UserInfo> datas = ExcelReadUtil.read("/app/test-import.xlsx", 1, 0, 0, UserInfo.class);
-        for (UserInfo data : datas) {
-            System.out.println(data);
-        }
+//        List<UserInfo> datas = ExcelReadUtil.read("/app/test-import.xlsx", 1, 0, 0, UserInfo.class);
+//        for (UserInfo data : datas) {
+//            System.out.println(data);
+//        }
     }
 }
