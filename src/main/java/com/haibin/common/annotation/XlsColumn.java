@@ -14,6 +14,9 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface XlsColumn {
-
+    /**
+     * 当前字段对应excel的列数 从0开始
+     * @return
+     */
     int index();
 }
