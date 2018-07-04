@@ -17,6 +17,9 @@ public class UserInfo {
     @XlsColumn(index = 2)
     private String age;
 
+    @XlsColumn(index = 3)
+    private String idNumber;
+
     public String getUsername() {
         return username;
     }
@@ -41,12 +44,21 @@ public class UserInfo {
         this.age = age;
     }
 
+    public String getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
+    }
+
     @Override
     public String toString() {
         return "UserInfo{" +
                 "username='" + username + '\'' +
                 ", mobile='" + mobile + '\'' +
-                ", age=" + age +
+                ", age='" + age + '\'' +
+                ", idNumber='" + idNumber + '\'' +
                 '}';
     }
 }

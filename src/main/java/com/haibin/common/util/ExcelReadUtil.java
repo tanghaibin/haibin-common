@@ -28,6 +28,7 @@ public class ExcelReadUtil {
     /**
      * 读取excel 转换成java pojo
      * 目前只支持字段类型为String
+     * 如果字段是超出long型的数据 请把excel字段类型设为文本
      *
      * @param filePath 文件路径
      * @param startRow 从第几行开始读
@@ -45,7 +46,7 @@ public class ExcelReadUtil {
     /**
      * 读取excel 转换成java pojo
      * 目前只支持字段类型为String
-     *
+     * 如果字段是超出long型的数据 请把excel字段类型设为文本
      * @param inputStream excel文件流
      * @param startRow    从第几行开始读
      * @param startCol    从第几列开始读
