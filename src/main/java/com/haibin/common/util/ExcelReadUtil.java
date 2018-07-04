@@ -10,9 +10,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
+
 /**
  * @author haibin.tang
  * @create 2018-07-03 下午4:52
@@ -25,18 +27,39 @@ public class ExcelReadUtil {
 
     /**
      * 读取excel 转换成java pojo
-     *  目前只支持字段类型为String
-     * @param filePath  文件路径
-     * @param startRow  从第几行开始读
-     * @param startCol  从第几列开始读
-     * @param sheetNum  从第几个shell开始读
-     * @param clazz     最终转换的类型
-     * @param <T>       泛型代表转换的类型
+     * 目前只支持字段类型为String
+     *
+     * @param filePath 文件路径
+     * @param startRow 从第几行开始读
+     * @param startCol 从第几列开始读
+     * @param sheetNum 从第几个shell开始读
+     * @param clazz    最终转换的类型
+     * @param <T>      泛型代表转换的类型
      * @return
      * @throws Exception
      */
     public static <T> List<T> read(String filePath, int startRow, int startCol, int sheetNum, Class<T> clazz) throws Exception {
-        List<Map<String, String>> datas = read(filePath, startRow, startCol, sheetNum);
+        return result(read(filePath, startRow, startCol, sheetNum), clazz);
+    }
+
+    /**
+     * 读取excel 转换成java pojo
+     * 目前只支持字段类型为String
+     *
+     * @param inputStream excel文件流
+     * @param startRow    从第几行开始读
+     * @param startCol    从第几列开始读
+     * @param sheetNum    从第几个shell开始读
+     * @param clazz       最终转换的类型
+     * @param <T>         泛型代表转换的类型
+     * @return
+     * @throws Exception
+     */
+    public static <T> List<T> read(InputStream inputStream, int startRow, int startCol, int sheetNum, Class<T> clazz) throws Exception {
+        return result(read(inputStream, startRow, startCol, sheetNum), clazz);
+    }
+
+    private static <T> List<T> result(List<Map<String, String>> datas, Class<T> clazz) throws Exception {
         Field[] fields = clazz.getDeclaredFields();
         Map<String, String> fieldNames = new HashMap<>(fields.length);
         for (Field field : fields) {
@@ -59,14 +82,17 @@ public class ExcelReadUtil {
     }
 
     private static List<Map<String, String>> read(String filePath, int startRow, int startCol, int sheetNum) throws Exception {
-        List<Map<String, String>> datas = new ArrayList<>();
         File target = new File(filePath);
-        FileInputStream fi = new FileInputStream(target);
+        return read(new FileInputStream(target), startRow, startCol, sheetNum);
+    }
+
+    private static List<Map<String, String>> read(InputStream inputStream, int startRow, int startCol, int sheetNum) throws Exception {
+        List<Map<String, String>> datas = new ArrayList<>();
         Workbook book;
         try {
-            book = new XSSFWorkbook(fi);
+            book = new XSSFWorkbook(inputStream);
         } catch (Exception ex) {
-            book = new HSSFWorkbook(fi);
+            book = new HSSFWorkbook(inputStream);
         }
         //sheet 从0开始
         Sheet sheet = book.getSheetAt(sheetNum);
