@@ -59,7 +59,7 @@ public class IdCardUtil {
      * @param provinceId
      * @return
      */
-    public static boolean isValidProvinceId(String provinceId) {
+    private static boolean isValidProvinceId(String provinceId) {
         for (String id : provinceCode) {
             if (id.equals(provinceId)) {
                 return true;
@@ -74,7 +74,7 @@ public class IdCardUtil {
      * @param inDate
      * @return
      */
-    public static boolean isValidDate(String inDate) {
+    private static boolean isValidDate(String inDate) {
         if (inDate == null) {
             return false;
         }
@@ -98,7 +98,7 @@ public class IdCardUtil {
      * @param cardIdArray
      * @return
      */
-    public static String sumPower(int[] cardIdArray) {
+    private static String sumPower(int[] cardIdArray) {
         int result = 0;
         for (int i = 0; i < power.length; i++) {
             result += power[i] * cardIdArray[i];
@@ -113,7 +113,7 @@ public class IdCardUtil {
      * @param idNo
      * @return
      */
-    public static boolean checkIdNoLastNum(String idNo) {
+    private static boolean checkIdNoLastNum(String idNo) {
         if (idNo.length() != length) {
             return false;
         }
