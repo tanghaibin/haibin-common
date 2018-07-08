@@ -21,31 +21,21 @@ public class FileUitl {
     private static final Logger LOG = LoggerFactory.getLogger(FileUitl.class);
 
     /**
-     * 文件后缀正则
-     */
-    private static final Pattern FILE_SUFFIX_REX = Pattern.compile("^(.{1,50})[a-zA-Z]");
-
-    /**
      * 新建图片
      *
      * @param inputStream 图片流
      * @param path        路径
+     * @param type 类型
      * @return
      */
-    public static String createImg(InputStream inputStream, final String path, final String suffix) {
+    public static String createImg(InputStream inputStream, final String path, final String type) {
         FileImageOutputStream fileImageOutputStream = null;
         try {
             File dir = new File(path);
             if (!dir.exists()) {
                 dir.mkdirs();
             }
-            String fileName;
-            if (FILE_SUFFIX_REX.matcher(suffix).matches()) {
-                fileName = suffix;
-            } else {
-                fileName = StringUtil.getUUID() + suffix;
-            }
-
+            String fileName = StringUtil.getUUID() + "." + type;
             File newFile = new File(path + fileName);
             newFile.createNewFile();
             fileImageOutputStream = new FileImageOutputStream(newFile);
