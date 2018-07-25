@@ -37,6 +37,7 @@ public class FileUitl {
             }
             String fileName = StringUtil.getUUID() + "." + type;
             File newFile = new File(path + fileName);
+            System.out.println("路径" + path + fileName);
             LOG.info("新建图片:{}", path + fileName);
             boolean success = newFile.createNewFile();
             if(!success) {
