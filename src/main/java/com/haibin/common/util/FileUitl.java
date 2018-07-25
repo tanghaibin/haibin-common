@@ -37,7 +37,11 @@ public class FileUitl {
             }
             String fileName = StringUtil.getUUID() + "." + type;
             File newFile = new File(path + fileName);
-            newFile.createNewFile();
+            LOG.info("新建图片:{}", path + fileName);
+            boolean success = newFile.createNewFile();
+            if(!success) {
+                throw new BizException("新建文件失败");
+            }
             fileImageOutputStream = new FileImageOutputStream(newFile);
             byte[] buf = new byte[1024 * 1024];
             while (inputStream.read(buf) != -1) {
