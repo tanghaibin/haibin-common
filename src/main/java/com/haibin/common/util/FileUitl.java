@@ -29,6 +29,7 @@ public class FileUitl {
      * @return
      */
     public static String createImg(InputStream inputStream, final String path, final String type) {
+        LOG.info("新建图片[{},{}]", path, type);
         FileImageOutputStream fileImageOutputStream = null;
         try {
             File dir = new File(path);
