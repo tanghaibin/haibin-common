@@ -29,7 +29,6 @@ public class FileUitl {
      * @return
      */
     public static String createImg(InputStream inputStream, final String path, final String type) {
-        LOG.info("新建图片[{},{}]", path, type);
         FileImageOutputStream fileImageOutputStream = null;
         try {
             File dir = new File(path);
@@ -38,8 +37,6 @@ public class FileUitl {
             }
             String fileName = StringUtil.getUUID() + "." + type;
             File newFile = new File(path + fileName);
-            System.out.println("路径" + path + fileName);
-            LOG.info("新建图片:{}", path + fileName);
             boolean success = newFile.createNewFile();
             if(!success) {
                 throw new BizException("新建文件失败");
